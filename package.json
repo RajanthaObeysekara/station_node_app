@@ -1,0 +1,18 @@
+{
+  "name": "weather-station-backend",
+  "version": "1.0.0",
+  "description": "This is the Backend for the weather stations",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.13.0",
+    "nodemon": "^2.0.15"
+  }
+}
