@@ -9,10 +9,17 @@ const insertDataWeatherStation =async (req, res) => {
         });
         return 
     }
-    //generate meta data
-    let meta_data = await newData.meta_data_generate();
-    
-    res.json(req.body)
+    await newData.meta_data_generate();
+    newData.upsert_data();
+
+    res.status(201).json({
+        "Station Validation": "Success",
+        "Meta data":"Success",
+        "Insert Data" : "Success"
+    })
 }
+
+
+
 
 module.exports = {insertDataWeatherStation}

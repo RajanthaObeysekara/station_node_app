@@ -4,6 +4,7 @@ let crypto = require('crypto');
 
 class station {
     constructor(ID, PASSWORD, NAME, LATITUDE, LONGITUDE, DESCRIPTION, LASTMAINTENANCE, STATIONTYPE, DOMESTICCONTACT) {
+        this.id = null;
         this.station_ID = ID;
         this.station_PASSWROD = PASSWORD;
         this.station_name = NAME;
@@ -24,9 +25,11 @@ class station {
             console.log(data[0])
             this.station_details(data[0])
         }
+        
     }
 
     station_details(object) {
+        this.id=object.id
         this.station_name = object.station_name;
         this.station_latitude = object.latitude;
         this.station_longitude = object.longitude;
@@ -43,12 +46,24 @@ class station {
             console.log('meta data');
             await this.generate_station_metadata();
         }
+        await this.hash_assign();
+        
+    }
+    async hash_assign(){
+        var data = await db_connection.command('select * from meta_data where station_id=$1 ', [this.station_ID]);
+        var temp_meta_data={};
+        data.forEach((value,index)=>{
+            temp_meta_data[value.parameter_id]=value.hash_key
+        })
+        this.meta_data = temp_meta_data        
     }
 
     async generate_station_metadata() {
         var data = null;
         if (this.station_type == 0) {
             data = await db_connection.command('select * from parameter where type=0 or type=2');
+            console.log('station meta parameters')
+            console.log(data)
         }
         if (this.station_type == 1) {
             data = await db_connection.command('select * from parameter where type=1 or type=2');
@@ -64,7 +79,7 @@ class station {
         })
         this.meta_data = meta_data
         console.log(this.meta_data);
-        this.hashInsert();
+        await this.hashInsert();
     }
 
     hasher(password, salt) {
