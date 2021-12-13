@@ -12,9 +12,9 @@ module.exports.command = async function (query, values) {
     })
     try {
         var connection = client.connect()
-        console.log(connection)
+        //console.log(connection)
     } catch (error) {
-        console.log(error)
+        //console.log(error)
     }
 
     try {
@@ -22,6 +22,6 @@ module.exports.command = async function (query, values) {
         //console.log(res)
         return res.rows;
     } catch (err) {
-        console.log(err.stack)
+       // console.log(err.stack)
     }
 }
